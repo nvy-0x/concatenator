@@ -27,7 +27,7 @@ def combine_files_with_names(file_paths, output_file=None):
             with open(full_path, 'r', encoding='utf-8') as file:
                 # Append file name at the top and demarcate the content
                 file_content = file.read()
-                combined_content += f"{os.path.basename(file_path)}\n```\n{file_content}\n```\n\n"
+                combined_content += f"{file_path.split('ez-a-sync/')[1]}\n```\n{file_content}\n```\n\n"
         except IOError as e:
             print(f"Error reading {full_path}: {e}")
     
