@@ -1,4 +1,5 @@
 combined_output.txt
+concatenated.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

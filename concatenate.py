@@ -1,5 +1,17 @@
+from dotenv import load_dotenv
 import os
 from os import walk
+
+load_dotenv()
+
+def get_file_paths(main_dir) :
+    f = [f"{dirpath}/{file}" for dirpath, dirnames, filenames in walk(main_dir) for file in filenames]
+    print(f)
+    return f
+
+my_files = get_file_paths(os.environ.get('CONCATENATE_PATH'))
+
+_done=set()
 
 def combine_files_with_names(file_paths, output_file=None):
     """
@@ -20,15 +32,24 @@ def combine_files_with_names(file_paths, output_file=None):
     for file_path in file_paths:
         # Construct the full path by combining the base directory and the relative path
         full_path = os.path.join(base_dir, file_path)
-        
+        if '.git' in full_path:
+            continue
         if not os.path.exists(full_path):
             print(f"Warning: {full_path} does not exist and will be skipped.")
             continue
+        if not (full_path.endswith('.py') or full_path.endswith('.txt') or full_path.endswith('.toml')):
+            print(f"Warning: {full_path} is skipped because it is not the file type we want.")
+            continue
+        if full_path in _done:
+            print("Warning: we already did this one")
+            continue
         try:
+            print(full_path)
             with open(full_path, 'r', encoding='utf-8') as file:
                 # Append file name at the top and demarcate the content
                 file_content = file.read()
-                combined_content += f"{file_path.split('ez-a-sync/')[1]}\n```\n{file_content}\n```\n\n"
+                combined_content += f"{file_path.split('ez-a-sync')[1][1:]}\n```\n{file_content}\n```\n\n"
+                _done.add(full_path)
         except IOError as e:
             print(f"Error reading {full_path}: {e}")
     
@@ -43,9 +64,4 @@ def combine_files_with_names(file_paths, output_file=None):
     
     return combined_content
 
-def get_file_paths(main_dir) :
-    f = [f"{dirpath}/{file}" for dirpath, dirnames, filenames in walk(main_dir) for file in filenames]
-    print(f)
-    return f
-
-my_files = get_file_paths('~/ez-a-sync')
+combine_files_with_names(my_files, 'concatenated.txt')
