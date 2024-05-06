@@ -1,4 +1,5 @@
 import os
+from os import walk
 
 def combine_files_with_names(file_paths, output_file=None):
     """
@@ -42,9 +43,9 @@ def combine_files_with_names(file_paths, output_file=None):
     
     return combined_content
 
-# Usage example
-file_paths = ['a_sync/modifiers/__init__.py', 'a_sync/modifiers/limiter.py', 'a_sync/modifiers/manager.py', 'a_sync/modifiers/semaphores.py', 'a_sync/modifiers/cache/__init__.py', 'a_sync/modifiers/cache/memory.py', 'a_sync/__init__.py', 'a_sync/_descriptors.py', 'a_sync/_flags.py', 'a_sync/_helpers.py', 'a_sync/_kwargs.py', 'a_sync/_meta.py', 'a_sync/abstract.py', 'a_sync/base.py', 'a_sync/config.py', 'a_sync/decorator.py', 'a_sync/function.py', 'a_sync/method.py', 'a_sync/property.py', 'a_sync/singleton.py', 'asyncio/__init__.py', 'asyncio/as_completed.py', 'asyncio/create_task.py', 'asyncio/gather.py', 'asyncio/utils.py', 'primitives/__init__.py', 'primitives/_debug.py', 'primitives/_loggable.py', 'primitives/queue.py', 'primitives/locks/__init__.py', 'primitives/locks/counter.py', 'primitives/locks/event.py', 'primitives/locks/prio_semaphore.py', 'primitives/locks/semaphore.py', 'sphinx/__init__.py', 'sphinx/ext.py', 'utils/__init__.py','utils/as_completed.py', 'utils/gather.py', 'utils/iterators.py', '__init__.py', '_smart.py', 'executor.py', '_bound.py', '_descriptor.py', '_flags.py', '_helpers.py', '_kwargs.py', '_meta.py', '_typing.py', 'abstract.py', 'aliases.py', 'base.py', 'config.py', 'decorator.py', 'ENVIRONMENT_VARIABLES.py', 'exceptions.py', 'future.py', 'iter.py', 'modified.py', 'property.py', 'singleton.py', 'task.py']  # Replace with actual relative file paths
-file_paths = ['../ez-a-sync/a_sync/' + path for path in file_paths]
-  # Replace with actual relative file paths
-combined_content = combine_files_with_names(file_paths, 'combined_output.txt')
-print("Files combined successfully.")
+def get_file_paths(main_dir) :
+    f = [f"{dirpath}/{file}" for dirpath, dirnames, filenames in walk(main_dir) for file in filenames]
+    print(f)
+    return f
+
+my_files = get_file_paths('~/ez-a-sync')
